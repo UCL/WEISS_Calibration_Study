@@ -25,6 +25,11 @@ charuco_freehand = {"dir": "charuco_freehand", "pattern": "charuco"}
 for dataset in [dots_rig, charuco_rig, charuco_freehand]:
 
     directory = os.path.join(data_dir, dataset["dir"])
+
+    if not os.path.exists(directory):
+        LOGGER.info("Directory doesn't exist: %s, skipping", directory)
+        continue
+
     pattern = dataset["pattern"]
     
     LOGGER.info(f'Processing dataset: {dataset}')
