@@ -1,6 +1,6 @@
 scikit-surgerycalibration==0.1.8
 scikit-surgerycore==0.6.2
-scikit-surgeryimage==0.8.5
+scikit-surgeryimage==0.8.6
 scikit-surgeryopencvcpp==0.0.10
 opencv-contrib-python==4.1.1.26
 numpy==1.18.1
