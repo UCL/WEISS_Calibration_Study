@@ -107,10 +107,10 @@ for dataset in [dots_rig, charuco_rig, charuco_freehand]:
                     index=labels,
                 columns=successful_dirs).transpose()
 
-    filename = f'{directory}.csv'
+    filename = f'{ dataset["dir"]}.csv'
 
     if is_iterative:
-        filename = f'{directory}-iterative.csv'
+        filename = f'{ dataset["dir"]}-iterative.csv'
 
     df.to_csv(filename)
 
