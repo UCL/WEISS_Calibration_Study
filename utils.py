@@ -19,6 +19,7 @@ minimum_points = 50
 LOGGER = logging.getLogger(__name__)
 
 def get_calib_data(directory: str, idx: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """ Generate correct file names for left/right images and tracking data. """
     left_image = cv2.imread(
         os.path.join(directory, f'calib.left.images.{idx}.png')
     )
@@ -38,6 +39,7 @@ def get_calib_data(directory: str, idx: int) -> Tuple[np.ndarray, np.ndarray, np
     return left_image, right_image, chessboard_tracking, scope_tracking
 
 def calibrate(left_pd: PointDetector, right_pd: PointDetector, calib_dir: str):
+    """ Wrapper around calibration algorithm from scikit-surgerycalibration. """
     LOGGER.info("Starting Calibration")
     calibration_driver = sc.StereoVideoCalibrationDriver(left_pd,
                                                          right_pd,
@@ -97,6 +99,8 @@ def iterative_calibrate(left_pd: PointDetector,
                         iterative_image_file: str,
                         iterations: int,
                         pattern: str):
+    """ Wrapper around iterative calibration algorithm from 
+    scikit-surgerycalibration. """
 
     LOGGER.info("Iterative Calibration")
 
@@ -139,7 +143,8 @@ def iterative_calibrate(left_pd: PointDetector,
         tracked_recon_err, elapsed_time, mean_frame_grabbing_time
 
 def get_dot_params(iterative: bool):
-    
+    """ Generate dot detector parameters for calibration. Different parameters
+    are used for iterative and non-iterative methods. """
     dot_detector_params = cv2.SimpleBlobDetector_Params()
     dot_detector_params.filterByInertia = True
     dot_detector_params.filterByArea = True
@@ -208,7 +213,7 @@ def get_point_detector(intrinsic_matrix, distortion_matrix, is_iterative: bool):
     return point_detector
 
 def get_ref_dot_detector():
-
+    """ Return a reference dot detector, for iterative calibration """
     camera_matrix = np.eye(3)
     distortion_coefficients = np.zeros(5)
 
@@ -217,11 +222,15 @@ def get_ref_dot_detector():
     return ref_point_detector
 
 def get_dot_detectors(is_iterative: bool):
-
-    left_intrinsic_matrix = np.loadtxt("support_data/viking_calib_scikit/calib.left.intrinsics.txt")
-    left_distortion_matrix = np.loadtxt("support_data/viking_calib_scikit/calib.left.distortion.txt")
-    right_intrinsic_matrix = np.loadtxt("support_data/viking_calib_scikit/calib.right.intrinsics.txt")
-    right_distortion_matrix = np.loadtxt("support_data/viking_calib_scikit/calib.right.distortion.txt")
+    """ Return left/right dot detectors. """
+    left_intrinsic_matrix = \
+        np.loadtxt("support_data/viking_calib_scikit/calib.left.intrinsics.txt")
+    left_distortion_matrix = \
+        np.loadtxt("support_data/viking_calib_scikit/calib.left.distortion.txt")
+    right_intrinsic_matrix = \
+        np.loadtxt("support_data/viking_calib_scikit/calib.right.intrinsics.txt")
+    right_distortion_matrix = \
+        np.loadtxt("support_data/viking_calib_scikit/calib.right.distortion.txt")
 
     left_point_detector = \
         get_point_detector(left_intrinsic_matrix, left_distortion_matrix, is_iterative)
@@ -232,7 +241,7 @@ def get_dot_detectors(is_iterative: bool):
     return left_point_detector, right_point_detector
 
 def get_charuco_detectors():
-
+    """ Return a charuco detector based on the pattern used for calibration. """
     reference_image = cv2.imread("support_data/pattern_4x4_19x26_5_4_with_inset_9x14.png")
 
     number_of_squares = [19, 26]
