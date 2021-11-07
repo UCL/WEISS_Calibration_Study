@@ -49,7 +49,7 @@ for dataset in [dots_rig, charuco_rig, charuco_freehand]:
         if pattern == "charuco":
             left_point_detector, right_point_detector = get_charuco_detectors()
             iterative_image_file = \
-                "support_data/pattern_4x4_19x26_5_4_with_inset_9x14.png"
+                "support_data/pattern_4x4_19x26_5_4_with_inset_11x16.png"
         
         if pattern == "dots":
             left_point_detector, right_point_detector = \
@@ -61,7 +61,7 @@ for dataset in [dots_rig, charuco_rig, charuco_freehand]:
 
             if is_iterative:
                 stereo_reproj_err, stereo_recon_err, tracked_reproj_err, \
-                  tracked_recon_err, elapsed_time, mean_frame_grabbing_time = \
+                  tracked_recon_err, elapsed_time, mean_frame_grabbing_time, stereo_params = \
                     iterative_calibrate(left_point_detector,
                                         right_point_detector,
                                         full_path,
@@ -70,7 +70,7 @@ for dataset in [dots_rig, charuco_rig, charuco_freehand]:
                                         pattern)
             else:
                stereo_reproj_err, stereo_recon_err, tracked_reproj_err, \
-                  tracked_recon_err, elapsed_time, mean_frame_grabbing_time = \
+                  tracked_recon_err, elapsed_time, mean_frame_grabbing_time, stereo_params = \
                     calibrate(left_point_detector,
                               right_point_detector,
                               full_path)
@@ -107,10 +107,10 @@ for dataset in [dots_rig, charuco_rig, charuco_freehand]:
                     index=labels,
                 columns=successful_dirs).transpose()
 
-    filename = f'{ dataset["dir"]}.csv'
+    filename = f'{ dataset["dir"]}-precalib.csv'
 
     if is_iterative:
-        filename = f'{ dataset["dir"]}-iterative.csv'
+        filename = f'{ dataset["dir"]}-precalib-iterative.csv'
 
     df.to_csv(filename)
 

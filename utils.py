@@ -38,7 +38,8 @@ def get_calib_data(directory: str, idx: int) -> Tuple[np.ndarray, np.ndarray, np
 
     return left_image, right_image, chessboard_tracking, scope_tracking
 
-def calibrate(left_pd: PointDetector, right_pd: PointDetector, calib_dir: str):
+def calibrate(left_pd: PointDetector, right_pd: PointDetector, calib_dir: str,
+              stereo_params = None):
     """ Wrapper around calibration algorithm from scikit-surgerycalibration. """
     LOGGER.info("Starting Calibration")
     calibration_driver = sc.StereoVideoCalibrationDriver(left_pd,
@@ -62,15 +63,35 @@ def calibrate(left_pd: PointDetector, right_pd: PointDetector, calib_dir: str):
     
     start = time.time()
     
-    stereo_reproj_err, stereo_recon_err, stereo_params = \
-        calibration_driver.calibrate()
+    if not stereo_params:
+        stereo_reproj_err, stereo_recon_err, stereo_params = \
+            calibration_driver.calibrate()
+
+    else:
+        left_intrinsics = stereo_params.left_params.camera_matrix
+        left_distortion = stereo_params.left_params.dist_coeffs
+        right_intrinsics = stereo_params.right_params.camera_matrix
+        right_distortion = stereo_params.right_params.dist_coeffs
+        l2r_rmat = stereo_params.l2r_rmat
+        l2r_tvec = stereo_params.l2r_tvec
+        
+        LOGGER.info("Using precalibration")
+        stereo_reproj_err, stereo_recon_err, stereo_params = \
+            calibration_driver.calibrate(
+                override_left_intrinsics=left_intrinsics,
+                override_left_distortion=left_distortion, 
+                override_right_intrinsics=right_intrinsics,
+                override_right_distortion=right_distortion,
+                override_l2r_rmat=l2r_rmat,
+                override_l2r_tvec=l2r_tvec)
 
     LOGGER.info(f"Calibration (not including hand eye) took: {time.time() - start}")
     tracked_reproj_err, tracked_recon_err, stereo_params = \
         calibration_driver.handeye_calibration()
 
     elapsed_time = time.time() - start
-    return stereo_reproj_err, stereo_recon_err, tracked_reproj_err, tracked_recon_err, elapsed_time, mean_frame_grabbing_time
+    return stereo_reproj_err, stereo_recon_err, tracked_reproj_err, \
+        tracked_recon_err, elapsed_time, mean_frame_grabbing_time, stereo_params
 
 def create_iterative_ref_data(iterative_image, point_detector, pattern: str):
     """
@@ -247,7 +268,7 @@ def get_charuco_detectors():
     number_of_squares = [19, 26]
     square_tag_sizes = [5, 4]
     filter_markers = True
-    number_of_chessboard_squares = [9, 14]
+    number_of_chessboard_squares = [11, 16]
     chessboard_square_size = 3
     chessboard_id_offset = 500
 
@@ -277,3 +298,17 @@ def get_charuco_detectors():
     )
 
     return left_point_detector, right_point_detector
+
+def get_detectors(pattern: str, is_iterative: bool):
+    """ Return the correct detectors and iterative file for the pattern"""
+    if pattern == "charuco":
+        left_point_detector, right_point_detector = get_charuco_detectors()
+        iterative_image_file = \
+            "support_data/pattern_4x4_19x26_5_4_with_inset_9x14.png"
+    
+    if pattern == "dots":
+        left_point_detector, right_point_detector = \
+            get_dot_detectors(is_iterative)
+        iterative_image_file = "support_data/circles-25x18-r40-s3.png"
+
+    return left_point_detector, right_point_detector, iterative_image_file
