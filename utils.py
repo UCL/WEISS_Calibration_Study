@@ -192,10 +192,10 @@ def get_point_detector(intrinsic_matrix, distortion_matrix, is_iterative: bool):
     :return:
     """
     number_of_dots = [18, 25]
-    dot_separation = 3
+    dot_separation = 5
     fiducial_indexes = [133, 141, 308, 316]
     reference_image_size = [1900, 2600]
-    pixels_per_mm = 40
+    pixels_per_mm = 20
 
     number_of_points = number_of_dots[0] * number_of_dots[1]
     model_points = np.zeros((number_of_points, 6))
@@ -210,7 +210,7 @@ def get_point_detector(intrinsic_matrix, distortion_matrix, is_iterative: bool):
             model_points[counter][5] = 0
             counter = counter + 1
 
-    dot_detector_params = get_dot_params(is_iterative)
+    #dot_detector_params = get_dot_params(is_iterative)
 
     threshold_offset = 20
     
@@ -228,7 +228,7 @@ def get_point_detector(intrinsic_matrix, distortion_matrix, is_iterative: bool):
                                   reference_image_size[0]),
             threshold_window_size=threshold_window_size,
             threshold_offset=threshold_offset,
-            dot_detector_params=dot_detector_params
+            #dot_detector_params=dot_detector_params
             )
 
     return point_detector
@@ -263,7 +263,7 @@ def get_dot_detectors(is_iterative: bool):
 
 def get_charuco_detectors():
     """ Return a charuco detector based on the pattern used for calibration. """
-    reference_image = cv2.imread("support_data/pattern_4x4_19x26_5_4_with_inset_9x14.png")
+    reference_image = cv2.imread("support_data/pattern_4x4_19x26_5_4_with_inset_11x16.png")
 
     number_of_squares = [19, 26]
     square_tag_sizes = [5, 4]

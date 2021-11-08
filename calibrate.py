@@ -22,7 +22,7 @@ charuco_rig = {"dir": "charuco_rig", "pattern": "charuco"}
 dots_rig = {"dir": "dots_rig", "pattern": "dots"}
 charuco_freehand = {"dir": "charuco_freehand", "pattern": "charuco"}
 
-for dataset in [dots_rig, charuco_rig, charuco_freehand]:
+for dataset in [dots_rig, charuco_rig]:#, charuco_freehand]:
 
     directory = os.path.join(data_dir, dataset["dir"])
 
@@ -107,10 +107,10 @@ for dataset in [dots_rig, charuco_rig, charuco_freehand]:
                     index=labels,
                 columns=successful_dirs).transpose()
 
-    filename = f'{ dataset["dir"]}-precalib.csv'
+    filename = f'{ dataset["dir"]}.csv'
 
     if is_iterative:
-        filename = f'{ dataset["dir"]}-precalib-iterative.csv'
+        filename = f'{ dataset["dir"]}-iterative.csv'
 
     df.to_csv(filename)
 

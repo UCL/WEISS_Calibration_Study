@@ -19,7 +19,7 @@ charuco_freehand = {"dir": "charuco_freehand", "pattern": "charuco"}
 
 #TODO
 is_iterative = False
-for dataset in [dots_rig, charuco_rig, charuco_freehand]:
+for dataset in [dots_rig, charuco_rig]:# charuco_freehand]:
 
     directory = os.path.join(data_dir, dataset["dir"])
 
