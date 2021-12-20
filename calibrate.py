@@ -109,11 +109,17 @@ for dataset in [dots_freehand, charuco_freehand, charuco_rig, dots_rig]:
                     index=labels,
                 columns=successful_dirs).transpose()
 
+    output_dir = f'results/{dataset["dir"]}'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     filename = f'{ dataset["dir"]}.csv'
 
     if is_iterative:
         filename = f'{ dataset["dir"]}-iterative.csv'
 
+    output_path = os.path.join(output_dir, filename)
+    df.to_csv(output_path)
     df.to_csv(filename)
 
     LOGGER.info(df)
