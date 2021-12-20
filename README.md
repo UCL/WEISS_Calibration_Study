@@ -4,7 +4,7 @@ See requirements.txt for packages used
 
 `python calibrate.py /path/to/data`
 
-# Run Precalibration Analysis
+# Run Precalibration Analysis (tihs will take several hours)
 
 `python precalibrate.py /path/to/data`
 
