@@ -21,8 +21,10 @@ if "iterative" in sys.argv[1:]:
 charuco_rig = {"dir": "charuco_rig", "pattern": "charuco"}
 dots_rig = {"dir": "dots_rig", "pattern": "dots"}
 charuco_freehand = {"dir": "charuco_freehand", "pattern": "charuco"}
+dots_freehand = {"dir": "dots_freehand", "pattern": "dots"}
 
-for dataset in [dots_rig, charuco_rig]:#, charuco_freehand]:
+
+for dataset in [dots_freehand, charuco_freehand, charuco_rig, dots_rig]:
 
     directory = os.path.join(data_dir, dataset["dir"])
 

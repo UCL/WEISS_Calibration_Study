@@ -1,8 +1,9 @@
-"""Helper functions for analyising/plotting results"""
+"""Helper functions for analyising/plotting results in notebook"""
 
 import os
 import pandas as pd
 import numpy as np
+from scipy.stats import ttest_ind
 
 def summarise_datasets(all_data, names):
     means = []

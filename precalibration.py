@@ -3,12 +3,11 @@ import os
 import sys
 import random
 import pandas as pd
-from utils import calibrate, get_detectors, iterative_calibrate, \
-    get_dot_detectors, get_charuco_detectors, get_detectors
+from utils import calibrate, get_detectors
 
 logging.basicConfig(level=logging.INFO, filename='calib.log', filemode='w')
 LOGGER = logging.getLogger(__name__)
-LOGGER.addHandler(logging.StreamHandler())
+LOGGER.addHandler(logging.StreamHandler()) 
 
 # Folder where calibraiton data is
 data_dir = sys.argv[1]
@@ -16,10 +15,11 @@ data_dir = sys.argv[1]
 charuco_rig = {"dir": "charuco_rig", "pattern": "charuco"}
 dots_rig = {"dir": "dots_rig", "pattern": "dots"}
 charuco_freehand = {"dir": "charuco_freehand", "pattern": "charuco"}
+dots_freehand = {"dir": "dots_freehand", "pattern": "dots"}
 
-#TODO
+#TODO: Get rid of iterative option?
 is_iterative = False
-for dataset in [dots_rig, charuco_rig]:# charuco_freehand]:
+for dataset in [dots_freehand, charuco_freehand, charuco_rig, dots_rig]:
 
     directory = os.path.join(data_dir, dataset["dir"])
 
