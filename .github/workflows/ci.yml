@@ -21,4 +21,3 @@ jobs:
       - name: Run calibration on single dataset
         run: |
           python calibrate.py test_data
-          python calibrate.py test_data iterative
