@@ -4,6 +4,8 @@ See requirements.txt for packages used
 
 `python calibrate.py /path/to/data`
 
+e.g. `python capibrate.py test_data`
+
 # Run Precalibration Analysis (this may take several hours)
 
 `python precalibrate.py /path/to/data`
