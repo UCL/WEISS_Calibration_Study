@@ -13,3 +13,5 @@ e.g. `python capibrate.py test_data`
 Results will appear in `results` subdirectory
 
 Analyse/plot results using notebook `process_results.ipynb`
+
+Data available at https://www.ucl.ac.uk/interventional-surgical-sciences/weiss-open-data-server
