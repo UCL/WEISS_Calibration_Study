@@ -5,6 +5,7 @@ import sys
 import time
 
 from typing import Tuple
+from random import shuffle
 import numpy as np
 import pandas as pd
 import sksurgerycore.transforms.matrix as mu
@@ -49,8 +50,13 @@ def calibrate(left_pd: PointDetector, right_pd: PointDetector, calib_dir: str,
     LOGGER.info(f"Grabbing Data: {calib_dir}")
 
     total_frame_grabbing_time = 0
-    num_frames = 10
-    for i in range(num_frames):
+
+    total_frames = 10
+    frames  = list(range(total_frames))
+    shuffle(frames)
+
+    num_frames = 3
+    for i in frames[:num_frames]:
         start = time.time()
         l_img, r_img, chessboard, scope = get_calib_data(calib_dir, i)
         calibration_driver.grab_data(l_img, r_img, scope, chessboard)

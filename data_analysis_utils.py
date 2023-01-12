@@ -41,12 +41,17 @@ def do_ttest(all_data, label1, label2):
     cat2 = label2_data["Tracked Recon."]
     tracked_recon = ttest_ind(cat1, cat2, equal_var=False)
     
+    cat1 = label1_data["Mean Calibration Time"]
+    cat2 = label2_data["Mean Calibration Time"]
+    calib_time = ttest_ind(cat1, cat2, equal_var=False)
+    
     print(f"Reprojection p-value: {reproj.pvalue}")
     print(f"Reconstruction p-value: {recon.pvalue}")
     print(f"Tracked Reprojection p-value: {tracked_reproj.pvalue}")
     print(f"Tracked Reconstruction p-value: {tracked_recon.pvalue}")
+    print(f"Mean Calibration Time p-value: {calib_time.pvalue}")
 
-    return reproj, recon, tracked_reproj, tracked_recon
+    return reproj, recon, tracked_reproj, tracked_recon, calib_time
 
 def collate_results(folder: str, threshold: int = 100) -> pd.DataFrame :
     """ Combine results from all csv files in a folder into a single dataframe
